@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCIWW Site Architecture Analysis</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-background-primary: #fff;
+    --color-background-secondary: #f5f5f2;
+    --color-text-primary: #414c4c;
+    --color-text-secondary: #6b7575;
+    --color-text-tertiary: #9aa3a3;
+    --color-border-tertiary: rgba(65,76,76,0.15);
+    --font-sans: 'Poppins', sans-serif;
+    --font-mono: 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-background-primary);
+    color: var(--color-text-primary);
+    padding: 32px 24px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: var(--color-text-primary);
+  }
+  .subtitle {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-bottom: 24px;
+  }
+  .wrap { display: flex; flex-direction: column; gap: 12px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .section {
+    border: 1px solid var(--color-border-tertiary);
+    border-radius: 10px;
+    padding: 12px 14px;
+    flex: 1;
+    min-width: 160px;
+    background: var(--color-background-secondary);
+  }
+  .section.warn { border-color: #EF9F27; background: #FAEEDA; }
+  .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .section-title { font-size: 12px; font-weight: 500; color: var(--color-text-primary); }
+  .badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 12px;
+  }
+  .badge-blue  { background: #E6F1FB; color: #185FA5; }
+  .badge-amber { background: #FAEEDA; color: #854F0B; }
+  .badge-red   { background: #FCEBEB; color: #A32D2D; }
+  .badge-green { background: #EAF3DE; color: #3B6D11; }
+  .badge-gray  { background: #F1EFE8; color: #5F5E5A; }
+  .url-list { display: flex; flex-direction: column; gap: 3px; }
+  .url-item {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .url-item.issue { color: #854F0B; font-weight: 500; }
+  .url-item.flat  { color: var(--color-text-tertiary); }
+  .issue-box {
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .issue-box.red   { background: #FCEBEB; border: 1px solid #F09595; color: #501313; }
+  .issue-box.amber { background: #FAEEDA; border: 1px solid #FAC775; color: #412402; }
+  .issue-box.green { background: #EAF3DE; border: 1px solid #C0DD97; color: #173404; }
+  .issue-title { font-weight: 500; margin-bottom: 4px; font-size: 12px; }
+  .section-label {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  .divider { height: 1px; background: var(--color-border-tertiary); margin: 4px 0; }
+  .stat-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+  .stat { text-align: center; flex: 1; }
+  .stat-num { font-size: 20px; font-weight: 500; color: var(--color-text-primary); }
+  .stat-label { font-size: 10px; color: var(--color-text-secondary); }
+</style>
+</head>
+<body>
+<h1>SCIWW.com — Site Architecture Analysis</h1>
+<p class="subtitle">Sitemap audit · Generated from https://sciww.com/sitemap.xml · 75 URLs</p>
+
+<div class="wrap">
+
+  <div class="stat-row">
+    <div class="stat"><div class="stat-num">75</div><div class="stat-label">Total URLs</div></div>
+    <div class="stat"><div class="stat-num">35</div><div class="stat-label">Content pages (blog/cases)</div></div>
+    <div class="stat"><div class="stat-num">6</div><div class="stat-label">Landing pages</div></div>
+    <div class="stat"><div class="stat-num" style="color:#A32D2D">5</div><div class="stat-label">Critical issues</div></div>
+  </div>
+
+  <div class="section-label">Core navigation pages</div>
+  <div class="row">
+    <div class="section">
+      <div class="section-head"><span class="section-title">Core / Company</span><span class="badge badge-blue">6</span></div>
+      <div class="url-list">
+        <div class="url-item">/</div>
+        <div class="url-item">/about-us/</div>
+        <div class="url-item">/contacts/</div>
+        <div class="url-item">/support/</div>
+        <div class="url-item">/careers/</div>
+        <div class="url-item">/sci-privacy-policy/</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><span class="section-title">Products / Solutions</span><span class="badge badge-blue">5</span></div>
+      <div class="url-list">
+        <div class="url-item">/our-solutions/</div>
+        <div class="url-item">/fuelb4-fuel-management-software/</div>
+        <div class="url-item">/fueldelivery-software-powered-by-fuelb4/</div>
+        <div class="url-item">/fuel-b4-app/</div>
+        <div class="url-item">/bridge-fuelb4/</div>
+      </div>
+    </div>
+    <div class="section warn">
+      <div class="section-head"><span class="section-title">Industries</span><span class="badge badge-amber">3 ⚠</span></div>
+      <div class="url-list">
+        <div class="url-item issue">/indsutries/ ← typo in URL</div>
+        <div class="url-item">/agriculture/</div>
+        <div class="url-item">/distributors/</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Content &amp; resources</div>
+  <div class="row">
+    <div class="section warn">
+      <div class="section-head"><span class="section-title">Resource hubs</span><span class="badge badge-amber">5 ⚠</span></div>
+      <div class="url-list">
+        <div class="url-item">/blog/</div>
+        <div class="url-item issue">/petro-talk/ ← duplicates blog?</div>
+        <div class="url-item issue">/fuel-management-resource-center/ ← fragmented</div>
+        <div class="url-item issue">/technical-resources-center/ ← fragmented</div>
+        <div class="url-item">/fuel-savings-calculator/</div>
+      </div>
+    </div>
+    <div class="section warn">
+      <div class="section-head"><span class="section-title">Blog posts (flat at root)</span><span class="badge badge-red">30 ⚠</span></div>
+      <div class="url-list">
+        <div class="url-item flat">/boost-driver-accountability-with…</div>
+        <div class="url-item flat">/solving-common-issues-with-fuel…</div>
+        <div class="url-item flat">/how-to-automate-your-fuel-manag…</div>
+        <div class="url-item flat">/best-practices-for-reducing-fle…</div>
+        <div class="url-item flat">/future-trends-in-fleet-fuel-man…</div>
+        <div class="url-item" style="color:var(--color-text-tertiary);font-style:italic;font-family:var(--font-sans)">+ 25 more at root /</div>
+      </div>
+    </div>
+    <div class="section warn">
+      <div class="section-head"><span class="section-title">Case studies (flat at root)</span><span class="badge badge-amber">5 ⚠</span></div>
+      <div class="url-list">
+        <div class="url-item">/case-studies/ (index)</div>
+        <div class="url-item issue">/our-work/ ← duplicates cases?</div>
+        <div class="divider"></div>
+        <div class="url-item flat">/afd-petroleum-boosts-efficiency…</div>
+        <div class="url-item flat">/fuel-management-transformation…</div>
+        <div class="url-item flat">/fuel-inventory-for-geita-gold-mine/</div>
+        <div class="url-item flat">/fuel-management-for-sugar-company/</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Conversion, jobs &amp; events</div>
+  <div class="row">
+    <div class="section">
+      <div class="section-head"><span class="section-title">Landing pages / CRO</span><span class="badge badge-gray">6</span></div>
+      <div class="url-list">
+        <div class="url-item">/calendar-booking/</div>
+        <div class="url-item">/calendar-booking-cold-email/</div>
+        <div class="url-item">/prequalify-survey/</div>
+        <div class="url-item">/fuel-management-fs-landing/</div>
+        <div class="url-item">/thank-you/</div>
+        <div class="url-item">/email-verified/</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><span class="section-title">Jobs</span><span class="badge badge-green">5 ✓</span></div>
+      <div class="url-list">
+        <div class="url-item">/job/senior-ml-developer/</div>
+        <div class="url-item">/job/marketing-manager/</div>
+        <div class="url-item">/job/help-desk-agent/</div>
+        <div class="url-item">/job/sql-server-developer/</div>
+        <div class="url-item">/job/full-stack-developer/</div>
+      </div>
+    </div>
+    <div class="section warn">
+      <div class="section-head"><span class="section-title">Events / News</span><span class="badge badge-amber">4 ⚠</span></div>
+      <div class="url-list">
+        <div class="url-item">/tmc-expo-2025/</div>
+        <div class="url-item">/wpma-expo-2025/</div>
+        <div class="url-item">/tampa-bay-export-alliance…/</div>
+        <div class="url-item">/sci-sales-llc-ranked-4970…/</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Critical issues detected</div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div class="issue-box red">
+      <div class="issue-title">🔴 30 blog posts live at root / instead of under /blog/</div>
+      URLs like /boost-driver-accountability-with-fuel-management-systems/ don't inherit SEO authority from the /blog/ hub. They should live at /blog/post-name/ to build a coherent hierarchy and link equity.
+    </div>
+    <div class="issue-box amber">
+      <div class="issue-title">🟡 5 case studies are disconnected from /case-studies/</div>
+      Individual case study pages sit at root, orphaned from the /case-studies/ index. Also, /our-work/ may be duplicating that section without a clear differentiation.
+    </div>
+    <div class="issue-box amber">
+      <div class="issue-title">🟡 Typo in section URL: /indsutries/ instead of /industries/</div>
+      This URL is in the sitemap and likely indexed by Google with the error. It affects crawlability and site credibility.
+    </div>
+    <div class="issue-box amber">
+      <div class="issue-title">🟡 Content hub fragmented across 3+ separate sections</div>
+      /blog/, /petro-talk/, /fuel-management-resource-center/ and /technical-resources-center/ split topical authority with no clear hierarchy between them.
+    </div>
+    <div class="issue-box amber">
+      <div class="issue-title">🟡 Conversion landing pages mixed into the main sitemap</div>
+      /email-verified/, /prequalify-survey/, /calendar-booking-cold-email/ provide no SEO value and waste crawl budget. They should have a noindex tag and be removed from the sitemap.
+    </div>
+    <div class="issue-box green">
+      <div class="issue-title">✅ The /job/ section is the only one with clean hierarchy</div>
+      All job postings correctly live under /job/. This is the model that should be replicated for blog posts and case studies.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
