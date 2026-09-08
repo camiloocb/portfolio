@@ -367,6 +367,8 @@
               <div class="feewrap"><span>$</span><input type="number" id="feeC" value="6500" step="500" min="0"></div>
             </div>
           </div>
+          <label class="ctl-l">Despliegue infraestructura WhatsApp · pago único</label>
+          <div class="feewrap"><span>$</span><input type="number" id="feeD" value="800000" step="50000" min="0"></div>
         </div>
 
         <!-- embudo -->
@@ -400,15 +402,16 @@
       </div>
 
       <div class="brk" style="margin-top:16px">
-        <div class="brk-h">Inversión mensual de FICORP</div>
+        <div class="brk-h">Inversión de FICORP</div>
         <div class="brk-row"><span>Pauta (medios)</span><span class="mono" id="bPauta">$6.000.000</span></div>
         <div class="brk-row"><span><span id="bGestN">180</span> leads gestionados × <span id="bFeeG">$4.500</span></span><span class="mono" id="bGest">$810.000</span></div>
         <div class="brk-row"><span><span id="bCalifN">120</span> leads calificados × <span id="bFeeC">$6.500</span></span><span class="mono" id="bCalif">$780.000</span></div>
-        <div class="brk-row tot"><span>Inversión total</span><span class="mono" id="bTot">$7.590.000</span></div>
-        <div class="brk-row tot rel"><span>Margen bruto proyectado</span><span class="mono" id="bMargen">$100,4M</span></div>
+        <div class="brk-row tot"><span>Inversión mensual recurrente</span><span class="mono" id="bTot">$7.590.000</span></div>
+        <div class="brk-row tot rel"><span>Margen bruto mensual proyectado</span><span class="mono" id="bMargen">$100,4M</span></div>
+        <div class="brk-row"><span>Despliegue infraestructura WhatsApp · <b>pago único (mes 1)</b></span><span class="mono" id="bDeploy">$800.000</span></div>
       </div>
 
-      <p class="muted" style="font-size:.78rem;margin-top:16px">Cifras direccionales; se afinan con los datos reales del mes 1. No incluyen IVA (19%) ni honorarios de operación legal. El ingreso de cada proceso (~3 meses) se reconoce de forma escalonada.</p>
+      <p class="muted" style="font-size:.78rem;margin-top:16px">El despliegue de la infraestructura de WhatsApp es un <b>pago único de implementación</b>, aparte de la estrategia GTM; los demás valores son mensuales. Cifras direccionales; se afinan con los datos del mes 1. No incluyen IVA (19%) ni honorarios de operación legal. El ingreso de cada proceso (~3 meses) se reconoce de forma escalonada.</p>
     </div>
 
     <div class="grid g3" style="margin-top:16px">
@@ -570,7 +573,7 @@
     // embudo
     const brutos=gb/CPL.google+mb/CPL.meta+tb/CPL.tiktok;
     const qr=+el('qual').value/100, cr=+el('close').value/100, ticket=+el('ticket').value;
-    const feeG=+el('feeG').value||0, feeC=+el('feeC').value||0;
+    const feeG=+el('feeG').value||0, feeC=+el('feeC').value||0, feeD=+el('feeD').value||0;
     const calif=brutos*qr, gestNC=Math.max(brutos-calif,0), clientes=calif*cr;
     el('cplComb').textContent=full(B/brutos);
     el('qualLabel').textContent=Math.round(qr*100)+'%';
@@ -601,8 +604,9 @@
     el('bCalif').textContent=full(calif*feeC);
     el('bTot').textContent=full(inv);
     el('bMargen').textContent=money(margen);
+    el('bDeploy').textContent=full(feeD);
   }
-  ['budget','qual','close','ticket','feeG','feeC'].forEach(id=>el(id).addEventListener('input',calc));
+  ['budget','qual','close','ticket','feeG','feeC','feeD'].forEach(id=>el(id).addEventListener('input',calc));
   document.querySelectorAll('#presets .fbtn').forEach(b=>b.addEventListener('click',()=>{
     document.querySelectorAll('#presets .fbtn').forEach(x=>x.classList.remove('on'));
     b.classList.add('on');
