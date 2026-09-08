@@ -1,0 +1,632 @@
+<title>Código FICORP</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+  :root{
+    --bg:#F3EAD9;
+    --bg-plane:#EEE2C9;
+    --surface:#FBF6EC;
+    --surface-2:#EFE3CC;
+    --ink:#17251E;
+    --ink-soft:#4B5A50;
+    --ink-mute:#83907F;
+    --forest:#1F4235;
+    --forest-deep:#0F2018;
+    --forest-line:#2B4E40;
+    --gold:#95701C;
+    --gold-strong:#7C5C16;
+    --border:rgba(23,37,30,0.14);
+    --border-soft:rgba(23,37,30,0.08);
+    --chip-bg:#E8DAB9;
+    --chart-meta:#1F7A4C;
+    --chart-google:#C8901E;
+    --chart-tiktok:#0B7FA0;
+    --shadow: 0 1px 2px rgba(15,32,24,0.06), 0 8px 24px -12px rgba(15,32,24,0.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0F1B15;
+      --bg-plane:#0A140F;
+      --surface:#16261E;
+      --surface-2:#1C2E24;
+      --ink:#F1E8D6;
+      --ink-soft:#C4CFC3;
+      --ink-mute:#8FA394;
+      --forest:#5CAE85;
+      --forest-deep:#08120D;
+      --forest-line:#3C6350;
+      --gold:#DDB05A;
+      --gold-strong:#E8C077;
+      --border:rgba(241,232,214,0.14);
+      --border-soft:rgba(241,232,214,0.08);
+      --chip-bg:#22352A;
+      --chart-meta:#3FA873;
+      --chart-google:#B8871E;
+      --chart-tiktok:#2A9AC2;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 28px -12px rgba(0,0,0,0.55);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0F1B15;
+    --bg-plane:#0A140F;
+    --surface:#16261E;
+    --surface-2:#1C2E24;
+    --ink:#F1E8D6;
+    --ink-soft:#C4CFC3;
+    --ink-mute:#8FA394;
+    --forest:#5CAE85;
+    --forest-deep:#08120D;
+    --forest-line:#3C6350;
+    --gold:#DDB05A;
+    --gold-strong:#E8C077;
+    --border:rgba(241,232,214,0.14);
+    --border-soft:rgba(241,232,214,0.08);
+    --chip-bg:#22352A;
+    --chart-meta:#3FA873;
+    --chart-google:#B8871E;
+    --chart-tiktok:#2A9AC2;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 28px -12px rgba(0,0,0,0.55);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Work Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--gold); color:var(--forest-deep); }
+
+  .wrap{ max-width:1080px; margin:0 auto; padding:0 clamp(20px,5vw,64px); }
+
+  h1,h2,h3,h4{ font-family:'Fraunces', serif; color:var(--ink); text-wrap:balance; margin:0; }
+  p{ margin:0; }
+  a{ color:inherit; }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--gold-strong);
+  }
+
+  /* ---------- nav rail ---------- */
+  .rail{
+    position:fixed; top:0; right:0; height:100%; width:14px;
+    display:flex; align-items:center; z-index:40;
+  }
+  .rail-inner{ display:flex; flex-direction:column; gap:14px; padding-right:10px; }
+  .rail-dot{
+    width:7px; height:7px; border-radius:50%; background:var(--ink-mute); opacity:.5;
+    cursor:pointer; transition:opacity .2s, background .2s, transform .2s; border:none; padding:0;
+  }
+  .rail-dot:hover{ opacity:.85; transform:scale(1.2); }
+  .rail-dot.active{ background:var(--gold); opacity:1; transform:scale(1.3); }
+  @media (max-width:820px){ .rail{ display:none; } }
+
+  section{ padding:88px 0; border-bottom:1px solid var(--border-soft); position:relative; }
+  section:last-of-type{ border-bottom:none; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:96px 0 76px;
+    background:
+      radial-gradient(680px 380px at 88% -10%, color-mix(in oklab, var(--gold) 16%, transparent), transparent),
+      var(--bg);
+    border-bottom:1px solid var(--border-soft);
+  }
+  .hero-mark{ display:flex; align-items:center; gap:10px; margin-bottom:56px; }
+  .hero-mark svg{ width:30px; height:30px; flex:none; }
+  .hero-mark span{ font-family:'IBM Plex Mono',monospace; font-size:13px; letter-spacing:.1em; color:var(--ink-soft); }
+  .hero h1{
+    font-size:clamp(40px,6.6vw,78px); line-height:0.98; font-weight:500; letter-spacing:-0.01em;
+    max-width:15ch;
+  }
+  .hero h1 em{ font-style:italic; color:var(--gold-strong); }
+  .hero-sub{
+    margin-top:26px; font-size:clamp(16px,2vw,20px); color:var(--ink-soft); max-width:46ch; line-height:1.55;
+  }
+  .hero-meta{
+    margin-top:48px; display:flex; flex-wrap:wrap; gap:32px;
+    border-top:1px solid var(--border); padding-top:24px;
+  }
+  .hero-meta div{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-mute); letter-spacing:.05em; }
+  .hero-meta strong{ display:block; font-family:'Work Sans',sans-serif; font-size:14px; color:var(--ink); font-weight:600; margin-top:4px; letter-spacing:0; }
+
+  /* ---------- section headers ---------- */
+  .s-head{ max-width:62ch; margin-bottom:48px; }
+  .s-head h2{ font-size:clamp(28px,4vw,42px); font-weight:500; margin-top:10px; line-height:1.08; }
+  .s-head p{ margin-top:16px; color:var(--ink-soft); font-size:16.5px; line-height:1.6; }
+
+  /* ---------- manifesto ---------- */
+  .manifesto{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+    font-size:clamp(22px,3vw,32px); line-height:1.42; color:var(--ink);
+    max-width:26ch; margin:0 auto 56px; text-align:center; text-wrap:balance;
+  }
+  .manifesto span{ color:var(--gold-strong); }
+
+  .brand-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+  .brand-cell{ background:var(--surface); padding:32px 28px; }
+  .brand-cell .n{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--gold-strong); font-weight:600; }
+  .brand-cell h4{ font-size:19px; font-weight:600; margin-top:10px; }
+  .brand-cell p{ margin-top:10px; color:var(--ink-soft); font-size:14.5px; line-height:1.55; }
+  @media (max-width:760px){ .brand-grid{ grid-template-columns:1fr; } }
+
+  .analogy-strip{
+    margin-top:1px; display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--border); border:1px solid var(--border); border-top:none; border-radius:0 0 14px 14px; overflow:hidden;
+  }
+  .analogy-cell{ background:var(--surface-2); padding:24px 28px; }
+  .analogy-cell .who{ font-family:'Fraunces',serif; font-style:italic; font-size:17px; color:var(--gold-strong); }
+  .analogy-cell p{ margin-top:8px; font-size:13.5px; color:var(--ink-soft); line-height:1.5; }
+  @media (max-width:760px){ .analogy-strip{ grid-template-columns:1fr; border-radius:0; } }
+
+  /* ---------- ICP cards ---------- */
+  .icp-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  @media (max-width:900px){ .icp-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:560px){ .icp-grid{ grid-template-columns:1fr; } }
+  .icp-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:26px 22px;
+    box-shadow:var(--shadow); display:flex; flex-direction:column; gap:14px;
+  }
+  .icp-icon{ width:42px; height:42px; border-radius:11px; background:var(--chip-bg); display:flex; align-items:center; justify-content:center; }
+  .icp-icon svg{ width:22px; height:22px; stroke:var(--forest); }
+  :root[data-theme="dark"] .icp-icon svg,
+  :root:not([data-theme="light"]) .icp-icon svg{ stroke:var(--forest); }
+  .icp-card h4{ font-size:18px; font-weight:600; }
+  .icp-card p{ font-size:13.8px; color:var(--ink-soft); line-height:1.55; }
+  .icp-tag{
+    margin-top:auto; padding-top:14px; border-top:1px solid var(--border-soft);
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--gold-strong); letter-spacing:.03em;
+    display:flex; justify-content:space-between; gap:8px;
+  }
+
+  /* ---------- callout ---------- */
+  .callout{
+    background:var(--forest-deep); color:#F1E8D6; border-radius:20px; padding:44px clamp(24px,5vw,56px);
+    display:grid; grid-template-columns:1.1fr 1fr; gap:40px; align-items:center;
+  }
+  @media (max-width:820px){ .callout{ grid-template-columns:1fr; } }
+  .callout .eyebrow{ color:var(--gold-strong); }
+  .callout h3{ color:#F8F2E4; font-size:clamp(22px,3vw,29px); font-weight:500; margin-top:10px; line-height:1.24; }
+  .callout p{ color:#CBD8CD; font-size:15px; line-height:1.65; margin-top:14px; }
+  .rank{ display:flex; flex-direction:column; gap:10px; }
+  .rank-row{ display:flex; align-items:center; gap:14px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); border-radius:11px; padding:11px 16px; }
+  .rank-num{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--gold-strong); font-weight:600; }
+  .rank-name{ font-size:14.5px; font-weight:600; color:#F1E8D6; flex:1; }
+  .rank-note{ font-size:12px; color:#9FB1A2; font-family:'IBM Plex Mono',monospace; }
+
+  /* ---------- channels ---------- */
+  .chan-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  @media (max-width:900px){ .chan-grid{ grid-template-columns:1fr; } }
+  .chan-card{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:0; overflow:hidden; box-shadow:var(--shadow); display:flex; flex-direction:column; }
+  .chan-head{ padding:22px 24px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border-soft); }
+  .chan-head h4{ font-size:19px; font-weight:600; }
+  .chan-dot{ width:11px; height:11px; border-radius:50%; }
+  .chan-body{ padding:20px 24px 26px; display:flex; flex-direction:column; gap:16px; flex:1; }
+  .chan-row .k{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-mute); }
+  .chan-row .v{ font-size:14px; margin-top:4px; line-height:1.5; color:var(--ink); }
+  .chan-copy{
+    margin-top:auto; background:var(--surface-2); border-radius:10px; padding:14px 16px;
+    font-family:'Fraunces',serif; font-style:italic; font-size:14.5px; color:var(--ink); line-height:1.45;
+  }
+
+  /* ---------- bar chart ---------- */
+  .chart-card{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px clamp(20px,4vw,36px); box-shadow:var(--shadow); }
+  .chart-title{ display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; margin-bottom:22px; }
+  .chart-title h4{ font-size:17px; font-weight:600; }
+  .legend{ display:flex; gap:18px; flex-wrap:wrap; }
+  .legend span{ display:inline-flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; }
+  .legend i{ width:10px; height:10px; border-radius:3px; display:inline-block; }
+
+  .bar-group{ margin-bottom:26px; }
+  .bar-group:last-child{ margin-bottom:0; }
+  .bar-group > .g-label{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-mute); letter-spacing:.08em; text-transform:uppercase; margin-bottom:12px; }
+  .bar-row{ display:grid; grid-template-columns:96px 1fr 52px; align-items:center; gap:12px; margin-bottom:10px; }
+  .bar-row:last-child{ margin-bottom:0; }
+  .bar-row .lbl{ font-size:13px; font-weight:600; color:var(--ink); }
+  .bar-track{ height:14px; background:var(--surface-2); border-radius:7px; overflow:hidden; }
+  .bar-fill{ height:100%; border-radius:7px; }
+  .bar-row .pct{ font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:right; font-variant-numeric:tabular-nums; color:var(--ink-soft); }
+
+  .seg-bar-row{ display:grid; grid-template-columns:168px 1fr 46px; align-items:center; gap:12px; margin-bottom:9px; }
+  .seg-bar-row .lbl{ font-size:13px; color:var(--ink); }
+  .seg-track{ height:10px; background:var(--surface-2); border-radius:6px; overflow:hidden; }
+  .seg-fill{ height:100%; border-radius:6px; background:var(--gold); }
+  .seg-bar-row .pct{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; text-align:right; color:var(--ink-soft); font-variant-numeric:tabular-nums; }
+
+  /* ---------- calendar ---------- */
+  .cal-tabs{ display:flex; gap:8px; margin-bottom:20px; }
+  .cal-tab{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.06em; padding:8px 16px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); cursor:pointer; }
+  .cal-tab.active{ background:var(--forest); color:#F3EAD9; border-color:var(--forest); }
+  :root[data-theme="dark"] .cal-tab.active,
+  :root:not([data-theme="light"]) .cal-tab.active{ color:#0F1B15; }
+  .cal-month{ display:none; }
+  .cal-month.active{ display:block; }
+  .cal-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  @media (max-width:820px){ .cal-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:520px){ .cal-grid{ grid-template-columns:1fr; } }
+  .cal-week{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px; display:flex; flex-direction:column; gap:10px; box-shadow:var(--shadow); }
+  .cal-week .w{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--gold-strong); letter-spacing:.08em; }
+  .cal-week h5{ font-family:'Fraunces',serif; font-weight:500; font-size:16.5px; margin:0; }
+  .cal-week p{ font-size:12.8px; color:var(--ink-soft); line-height:1.5; }
+  .cal-pillars{ display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; }
+  .pill{ font-family:'IBM Plex Mono',monospace; font-size:10px; padding:3px 8px; border-radius:999px; background:var(--chip-bg); color:var(--forest); }
+  :root[data-theme="dark"] .pill,
+  :root:not([data-theme="light"]) .pill{ color:var(--forest); }
+
+  /* ---------- roadmap ---------- */
+  .road{ position:relative; padding-left:28px; }
+  .road::before{ content:""; position:absolute; left:6px; top:6px; bottom:6px; width:2px; background:var(--border); }
+  .road-item{ position:relative; padding-bottom:30px; }
+  .road-item:last-child{ padding-bottom:0; }
+  .road-item::before{ content:""; position:absolute; left:-28px; top:4px; width:12px; height:12px; border-radius:50%; background:var(--bg); border:2px solid var(--gold); }
+  .road-item .w{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--gold-strong); letter-spacing:.06em; }
+  .road-item h5{ font-family:'Fraunces',serif; font-size:17px; font-weight:500; margin-top:4px; }
+  .road-item p{ font-size:13.5px; color:var(--ink-soft); margin-top:5px; line-height:1.55; max-width:60ch; }
+  .road-phase{ font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--ink-mute); margin:34px 0 4px; }
+  .road-phase:first-child{ margin-top:0; }
+
+  /* ---------- kpi + checklist ---------- */
+  .kpi-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:36px; }
+  @media (max-width:820px){ .kpi-grid{ grid-template-columns:repeat(2,1fr); } }
+  .kpi-card{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; }
+  .kpi-card .k{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-mute); letter-spacing:.05em; text-transform:uppercase; }
+  .kpi-card .v{ font-family:'Fraunces',serif; font-size:26px; margin-top:6px; color:var(--forest); }
+  :root[data-theme="dark"] .kpi-card .v,
+  :root:not([data-theme="light"]) .kpi-card .v{ color:var(--forest); }
+
+  .check-list{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px 24px; }
+  @media (max-width:700px){ .check-list{ grid-template-columns:1fr; } }
+  .check-item{ display:flex; gap:10px; align-items:flex-start; font-size:14px; color:var(--ink-soft); line-height:1.5; }
+  .check-item svg{ flex:none; width:17px; height:17px; margin-top:2px; stroke:var(--gold-strong); }
+
+  footer{ padding:56px 0 72px; }
+  .foot-row{ display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px; }
+  .foot-row .mark{ font-family:'Fraunces',serif; font-size:20px; }
+  .foot-row .conf{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-mute); letter-spacing:.05em; text-align:right; }
+</style>
+
+<div class="rail"><div class="rail-inner" id="railInner"></div></div>
+
+<section class="hero" id="s-hero">
+  <div class="wrap">
+    <div class="hero-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--forest)" stroke-width="1.4"><path d="M12 2l7 3v6c0 5-3.2 8.4-7 10-3.8-1.6-7-5-7-10V5l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+      <span>FICORP · CÓDIGO DE MARCA &amp; ADQUISICIÓN</span>
+    </div>
+    <h1>El derecho a<br/>una <em>segunda oportunidad</em><br/>financiera.</h1>
+    <p class="hero-sub">Sistema de marca y plan de pauta para los primeros dos meses de FICORP en el mercado digital — cómo hablamos, a quién buscamos y cómo convertimos ese diagnóstico gratuito en pipeline real.</p>
+    <div class="hero-meta">
+      <div>DOCUMENTO<strong>Avance de estrategia</strong></div>
+      <div>ALCANCE<strong>Marca · Meta · Google Ads · TikTok · Orgánico</strong></div>
+      <div>HORIZONTE<strong>Mes 1 — Mes 2</strong></div>
+      <div>PREPARADO POR<strong>High Insight para FICORP</strong></div>
+    </div>
+  </div>
+</section>
+
+<section id="s-brand">
+  <div class="wrap">
+    <div class="eyebrow" style="text-align:center">01 — IDENTIDAD</div>
+    <p class="manifesto">FICORP no vende alivio de deudas. <span>Ejerce el derecho</span> a reorganizar una vida financiera, con la ley de su lado.</p>
+
+    <div class="brand-grid">
+      <div class="brand-cell">
+        <div class="n">Cómo habla</div>
+        <h4>Como el abogado de confianza de la familia</h4>
+        <p>Directa, cálida, sin tecnicismos ni letra pequeña. Nunca culpa a la persona por haber llegado ahí; siempre mira hacia adelante — qué se puede hacer hoy, con la ley, sin promesas mágicas.</p>
+      </div>
+      <div class="brand-cell">
+        <div class="n">De qué habla</div>
+        <h4>Derechos, límites y procesos — no cifras de miedo</h4>
+        <p>El tope legal de descuento por libranza, el paso a paso de la insolvencia de persona natural, historias reales de segunda oportunidad. Educa antes de vender.</p>
+      </div>
+      <div class="brand-cell">
+        <div class="n">Cómo se expresa</div>
+        <h4>Verde bosque, crema cálido, serif con peso institucional</h4>
+        <p>La misma paleta y tipografía del sitio: transmite estabilidad y trato humano, no la urgencia roja de un cobrador ni la frialdad azul de un banco.</p>
+      </div>
+      <div class="brand-cell">
+        <div class="n">Relación con clientes</div>
+        <h4>Aliado, no vendedor</h4>
+        <p>El diagnóstico es gratis y sin letra pequeña. El canal es WhatsApp, no un formulario frío. La confidencialidad se comunica activamente, no se asume.</p>
+      </div>
+      <div class="brand-cell">
+        <div class="n">Cómo los muestra</div>
+        <h4>Historias de segunda oportunidad, nunca "antes/después"</h4>
+        <p>Testimonios anonimizados por perfil — "Capitán R., Fuerza Aérea" — y cifras de impacto agregadas. Nunca se expone ni se sensacionaliza la situación de nadie.</p>
+      </div>
+      <div class="brand-cell">
+        <div class="n">Relación con los founders</div>
+        <h4>La cara humana detrás del proceso legal</h4>
+        <p>El equipo jurídico aparece explicando conceptos en video corto, con nombre y credencial visibles. En un sector donde abundan los "asesores de deudas" informales, la cara real es la mayor prueba de seriedad.</p>
+      </div>
+    </div>
+    <div class="analogy-strip">
+      <div class="analogy-cell"><div class="who">como Apple</div><p>Simplicidad radical frente a lo complejo: la ley se traduce en decisiones claras, no en jerga.</p></div>
+      <div class="analogy-cell"><div class="who">como Heineken</div><p>Calidez humana y pertenencia: contenido de comunidad, casos reales, cero distancia corporativa.</p></div>
+      <div class="analogy-cell"><div class="who">como Coca-Cola</div><p>Un mismo mensaje de esperanza en cada pieza: segunda oportunidad, nunca miedo ni culpa.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="s-icp">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="eyebrow">02 — A QUIÉN LE HABLAMOS</div>
+      <h2>El ICP real, tal como ya vive en el sitio</h2>
+      <p>Cuatro perfiles con un mismo mecanismo de fondo: ingreso formal y recurrente, comprometido en descuentos o deudas que superan su capacidad de pago.</p>
+    </div>
+    <div class="icp-grid">
+      <div class="icp-card">
+        <div class="icp-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 3v6c0 5-3.2 8.4-7 10-3.8-1.6-7-5-7-10V5l7-3z"/></svg></div>
+        <h4>Fuerza pública</h4>
+        <p>Militares y policías con múltiples libranzas que consumen más del 50% del salario. Ingreso estable de nómina, alto número de obligaciones simultáneas.</p>
+        <div class="icp-tag"><span>Prioridad</span><span>Alta</span></div>
+      </div>
+      <div class="icp-card">
+        <div class="icp-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5C4 5 5 4 7 4h10c1 0 1 .6 1 1v13c0 .6 0 1-1 1H7c-2 0-3-1-3-2.5z"/><path d="M4 18.5C4 17 5 16 7 16h11"/></svg></div>
+        <h4>Docentes</h4>
+        <p>Créditos FOMAG y libranzas con cooperativas del sector educativo que superan su capacidad de pago. Muy receptivos a contenido educativo.</p>
+        <div class="icp-tag"><span>Prioridad</span><span>Alta</span></div>
+      </div>
+      <div class="icp-card">
+        <div class="icp-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg></div>
+        <h4>Pensionados</h4>
+        <p>Descuentos de libranza que reducen la mesada al mínimo legal. Ingreso más bajo en términos absolutos, pero el derecho a hacer valer el límite es igual de sólido.</p>
+        <div class="icp-tag"><span>Prioridad</span><span>Media</span></div>
+      </div>
+      <div class="icp-card">
+        <div class="icp-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="7.5" width="17" height="12" rx="1.6"/><path d="M8.5 7.5V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v1.5"/></svg></div>
+        <h4>Empleados e independientes</h4>
+        <p>Deudas de tarjetas de crédito, libre inversión, embargos o procesos ejecutivos. El empleado formal cualifica mejor que el independiente por estabilidad de ingreso.</p>
+        <div class="icp-tag"><span>Prioridad</span><span>Media / Baja</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s-insight">
+  <div class="wrap">
+    <div class="callout">
+      <div>
+        <div class="eyebrow">EL FILTRO QUE REEMPLAZA LA SEGMENTACIÓN PROHIBIDA</div>
+        <h3>No segmentamos por deuda. Segmentamos por ingreso formal y descontable.</h3>
+        <p>Meta prohíbe targetear por dificultad financiera — y es, además, el peor filtro comercial: atrae pánico, no capacidad de pago. El verdadero calificador, el mismo que exige la ley para el proceso de insolvencia, es tener un ingreso <strong>formal, recurrente y sujeto a descuento</strong> (nómina o mesada). Ahí conviven, sin fricción, el requisito legal y el requisito comercial.</p>
+        <p>Por eso la inversión no se reparte igual entre los cuatro perfiles: se prioriza a quien tiene la nómina más estable y comprometida, y se trata al independiente — sin ingreso formal verificable — como el segmento de mayor riesgo, no como el de mayor urgencia.</p>
+      </div>
+      <div class="rank">
+        <div class="rank-row"><span class="rank-num">01</span><span class="rank-name">Fuerza pública</span><span class="rank-note">nómina + multi-libranza</span></div>
+        <div class="rank-row"><span class="rank-num">02</span><span class="rank-name">Docentes</span><span class="rank-note">nómina FOMAG</span></div>
+        <div class="rank-row"><span class="rank-num">03</span><span class="rank-name">Empleados formales</span><span class="rank-note">nómina privada</span></div>
+        <div class="rank-row"><span class="rank-num">04</span><span class="rank-name">Pensionados</span><span class="rank-note">mesada, ticket menor</span></div>
+        <div class="rank-row"><span class="rank-num">05</span><span class="rank-name">Independientes</span><span class="rank-note">ingreso no verificable</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s-channels">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="eyebrow">03 — PAUTA POR CANAL</div>
+      <h2>Un canal para captar demanda, otro para crearla</h2>
+      <p>El objetivo de cada canal es distinto y la métrica que manda es la conversación de WhatsApp calificada por el bot — no el clic.</p>
+    </div>
+
+    <div class="chan-grid">
+      <div class="chan-card">
+        <div class="chan-head"><h4>Meta</h4><span class="chan-dot" style="background:var(--chart-meta)"></span></div>
+        <div class="chan-body">
+          <div class="chan-row"><div class="k">Objetivo</div><div class="v">Conversiones — Click to WhatsApp</div></div>
+          <div class="chan-row"><div class="k">Formato</div><div class="v">Video nativo corto + carrusel educativo, un ad set por segmento de ICP</div></div>
+          <div class="chan-row"><div class="k">Audiencia</div><div class="v">Amplia/Advantage+ por segmento; lookalike de clientes reales en cuanto haya base</div></div>
+          <div class="chan-row"><div class="k">KPI</div><div class="v">Costo por conversación calificada por el bot</div></div>
+          <div class="chan-copy">"Existe un límite legal a lo que pueden descontarle de su salario. Conózcalo en un diagnóstico gratuito y confidencial."</div>
+        </div>
+      </div>
+      <div class="chan-card">
+        <div class="chan-head"><h4>Google Ads</h4><span class="chan-dot" style="background:var(--chart-google)"></span></div>
+        <div class="chan-body">
+          <div class="chan-row"><div class="k">Objetivo</div><div class="v">Search — captura de demanda ya activa</div></div>
+          <div class="chan-row"><div class="k">Formato</div><div class="v">Anuncios de búsqueda + extensiones de llamada/ubicación, cero Display al inicio</div></div>
+          <div class="chan-row"><div class="k">Audiencia</div><div class="v">Keywords de intención alta: "límite legal libranza", "embargo salario qué hacer", "insolvencia persona natural"</div></div>
+          <div class="chan-row"><div class="k">KPI</div><div class="v">CPL de búsqueda + tasa de agendamiento</div></div>
+          <div class="chan-copy">"Insolvencia de persona natural con respaldo legal. Diagnóstico gratuito — sin compromiso."</div>
+        </div>
+      </div>
+      <div class="chan-card">
+        <div class="chan-head"><h4>TikTok</h4><span class="chan-dot" style="background:var(--chart-tiktok)"></span></div>
+        <div class="chan-body">
+          <div class="chan-row"><div class="k">Objetivo</div><div class="v">Alcance/tráfico — construcción de autoridad, no cierre</div></div>
+          <div class="chan-row"><div class="k">Formato</div><div class="v">Explicadores nativos de 30-45s con el equipo legal en cámara</div></div>
+          <div class="chan-row"><div class="k">Audiencia</div><div class="v">Amplia, sesgo hacia empleados/independientes más jóvenes; presupuesto de testeo</div></div>
+          <div class="chan-row"><div class="k">KPI</div><div class="v">Costo por video visto al 75% + tráfico a WhatsApp</div></div>
+          <div class="chan-copy">"Su libranza no puede superar el 50% de su sueldo. Se lo explicamos en un minuto."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s-invest">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="eyebrow">04 — DISTRIBUCIÓN DE INVERSIÓN</div>
+      <h2>Mes 1 testea, Mes 2 escala</h2>
+      <p>Cifras en porcentaje de la inversión total en pauta — se recalibran con datos reales al cierre de cada mes.</p>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">
+        <h4>Mix por canal</h4>
+        <div class="legend">
+          <span><i style="background:var(--chart-meta)"></i>Meta</span>
+          <span><i style="background:var(--chart-google)"></i>Google Ads</span>
+          <span><i style="background:var(--chart-tiktok)"></i>TikTok</span>
+        </div>
+      </div>
+      <div class="bar-group">
+        <div class="g-label">Mes 1 — Fundación y testeo</div>
+        <div class="bar-row"><div class="lbl">Meta</div><div class="bar-track"><div class="bar-fill" style="width:50%;background:var(--chart-meta)"></div></div><div class="pct">50%</div></div>
+        <div class="bar-row"><div class="lbl">Google Ads</div><div class="bar-track"><div class="bar-fill" style="width:35%;background:var(--chart-google)"></div></div><div class="pct">35%</div></div>
+        <div class="bar-row"><div class="lbl">TikTok</div><div class="bar-track"><div class="bar-fill" style="width:15%;background:var(--chart-tiktok)"></div></div><div class="pct">15%</div></div>
+      </div>
+      <div class="bar-group">
+        <div class="g-label">Mes 2 — Escalamiento y retargeting</div>
+        <div class="bar-row"><div class="lbl">Meta</div><div class="bar-track"><div class="bar-fill" style="width:55%;background:var(--chart-meta)"></div></div><div class="pct">55%</div></div>
+        <div class="bar-row"><div class="lbl">Google Ads</div><div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--chart-google)"></div></div><div class="pct">30%</div></div>
+        <div class="bar-row"><div class="lbl">TikTok</div><div class="bar-track"><div class="bar-fill" style="width:15%;background:var(--chart-tiktok)"></div></div><div class="pct">15%</div></div>
+      </div>
+    </div>
+
+    <div style="height:16px"></div>
+
+    <div class="chart-card">
+      <div class="chart-title"><h4>Mix por segmento de ICP (dentro de la pauta en Meta)</h4></div>
+      <div class="bar-group">
+        <div class="g-label">Mes 1</div>
+        <div class="seg-bar-row"><div class="lbl">Fuerza pública</div><div class="seg-track"><div class="seg-fill" style="width:30%"></div></div><div class="pct">30%</div></div>
+        <div class="seg-bar-row"><div class="lbl">Docentes</div><div class="seg-track"><div class="seg-fill" style="width:25%"></div></div><div class="pct">25%</div></div>
+        <div class="seg-bar-row"><div class="lbl">Empleados formales</div><div class="seg-track"><div class="seg-fill" style="width:25%"></div></div><div class="pct">25%</div></div>
+        <div class="seg-bar-row"><div class="lbl">Pensionados</div><div class="seg-track"><div class="seg-fill" style="width:15%"></div></div><div class="pct">15%</div></div>
+        <div class="seg-bar-row"><div class="lbl">Independientes</div><div class="seg-track"><div class="seg-fill" style="width:5%"></div></div><div class="pct">5%</div></div>
+      </div>
+      <div class="bar-group">
+        <div class="g-label">Mes 2 (hipótesis inicial — se ajusta con datos reales de mes 1)</div>
+        <div class="seg-bar-row"><div class="lbl">Fuerza pública</div><div class="seg-track"><div class="seg-fill" style="width:35%"></div></div><div class="pct">35%</div></div>
+        <div class="seg-bar-row"><div class="lbl">Docentes</div><div class="seg-track"><div class="seg-fill" style="width:30%"></div></div><div class="pct">30%</div></div>
+        <div class="seg-bar-row"><div class="lbl">Empleados formales</div><div class="seg-track"><div class="seg-fill" style="width:20%"></div></div><div class="pct">20%</div></div>
+        <div class="seg-bar-row"><div class="lbl">Pensionados</div><div class="seg-track"><div class="seg-fill" style="width:10%"></div></div><div class="pct">10%</div></div>
+        <div class="seg-bar-row"><div class="lbl">Independientes</div><div class="seg-track"><div class="seg-fill" style="width:5%"></div></div><div class="pct">5%</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s-content">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="eyebrow">05 — PARRILLA ORGÁNICA</div>
+      <h2>La orgánica valida el ángulo antes de pagarlo</h2>
+      <p>Cada semana rota el foco de segmento; cada pieza sigue uno de cuatro pilares: educativo, prueba social, comunidad/founders o respuesta directa.</p>
+    </div>
+
+    <div class="cal-tabs">
+      <button class="cal-tab active" data-m="m1">Mes 1</button>
+      <button class="cal-tab" data-m="m2">Mes 2</button>
+    </div>
+
+    <div class="cal-month active" id="m1">
+      <div class="cal-grid">
+        <div class="cal-week"><div class="w">SEMANA 1</div><h5>Fuerza pública</h5><p>¿Cuánto le pueden descontar de su sueldo? El límite legal explicado en 60s.</p><div class="cal-pillars"><span class="pill">Educativo</span></div></div>
+        <div class="cal-week"><div class="w">SEMANA 2</div><h5>Docentes</h5><p>FOMAG y cooperativas: qué pasa cuando la libranza supera lo permitido.</p><div class="cal-pillars"><span class="pill">Educativo</span><span class="pill">Founders</span></div></div>
+        <div class="cal-week"><div class="w">SEMANA 3</div><h5>Pensionados</h5><p>Su mesada tiene un piso protegido por ley. Cómo hacerlo valer.</p><div class="cal-pillars"><span class="pill">Educativo</span></div></div>
+        <div class="cal-week"><div class="w">SEMANA 4</div><h5>Empleados e independientes</h5><p>Embargos y procesos ejecutivos: primeros pasos con respaldo legal.</p><div class="cal-pillars"><span class="pill">Prueba social</span></div></div>
+      </div>
+    </div>
+    <div class="cal-month" id="m2">
+      <div class="cal-grid">
+        <div class="cal-week"><div class="w">SEMANA 5</div><h5>Casos reales — Fuerza pública</h5><p>Testimonio anonimizado: de tres libranzas simultáneas a un plan viable.</p><div class="cal-pillars"><span class="pill">Prueba social</span></div></div>
+        <div class="cal-week"><div class="w">SEMANA 6</div><h5>Detrás del proceso</h5><p>El equipo legal explica, cámara en mano, qué pasa entre el diagnóstico y la demanda.</p><div class="cal-pillars"><span class="pill">Founders</span></div></div>
+        <div class="cal-week"><div class="w">SEMANA 7</div><h5>Mitos de la insolvencia</h5><p>"Pierdo todo", "quedo reportado para siempre" — desmontados uno a uno.</p><div class="cal-pillars"><span class="pill">Educativo</span></div></div>
+        <div class="cal-week"><div class="w">SEMANA 8</div><h5>Cifras del mes</h5><p>Cuántas familias diagnosticadas, cuánto en descuentos cuestionados — sin exponer identidades.</p><div class="cal-pillars"><span class="pill">Prueba social</span><span class="pill">CTA</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s-roadmap">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="eyebrow">06 — HOJA DE RUTA</div>
+      <h2>Ocho semanas, de la cuenta cero al primer lookalike</h2>
+    </div>
+    <div class="road">
+      <div class="road-phase">Mes 1</div>
+      <div class="road-item"><div class="w">SEMANA 1</div><h5>Cuentas y tracking</h5><p>Business Manager, Google Ads, TikTok Business Center. Píxel + Conversions API, GA4, UTMs, definición de audiencias base por segmento.</p></div>
+      <div class="road-item"><div class="w">SEMANA 2</div><h5>Primer lanzamiento</h5><p>Piezas orgánicas del pilar educativo en marcha. Se encienden los cuatro ad sets de Meta y la campaña de Search en Google.</p></div>
+      <div class="road-item"><div class="w">SEMANA 3</div><h5>Testeo de ángulos</h5><p>A/B de copy por segmento, lanzamiento de TikTok, primeras optimizaciones por costo de conversación calificada.</p></div>
+      <div class="road-item"><div class="w">SEMANA 4</div><h5>Lectura de resultados</h5><p>Se identifica el segmento y el ángulo ganador. Se arma la semilla de audiencia para el lookalike de Mes 2.</p></div>
+      <div class="road-phase">Mes 2</div>
+      <div class="road-item"><div class="w">SEMANA 5-6</div><h5>Escalamiento</h5><p>Más presupuesto a lo que funcionó. Retargeting a visitantes del sitio y a quienes vieron el contenido orgánico. Primer lookalike de conversaciones calificadas.</p></div>
+      <div class="road-item"><div class="w">SEMANA 7</div><h5>Prueba social pesada</h5><p>Casos y testimonios en paralelo al retargeting, para sostener la conversión en frío.</p></div>
+      <div class="road-item"><div class="w">SEMANA 8</div><h5>Cierre y reasignación</h5><p>Reporte del bimestre, reajuste del mix de inversión por segmento con datos reales, proyección de Mes 3.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="s-kpi">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="eyebrow">07 — INDICADORES Y CUMPLIMIENTO</div>
+      <h2>Lo que miramos cada semana</h2>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="k">Mes 1</div><div class="v">Costo / conversación</div></div>
+      <div class="kpi-card"><div class="k">Mes 1</div><div class="v">% calificado por bot</div></div>
+      <div class="kpi-card"><div class="k">Mes 2</div><div class="v">Costo / cita agendada</div></div>
+      <div class="kpi-card"><div class="k">Mes 2</div><div class="v">CAC proyectado / caso</div></div>
+    </div>
+    <div class="check-list">
+      <div class="check-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg>Copy en clave de protección legal, nunca de urgencia o culpa financiera.</div>
+      <div class="check-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg>Sin segmentación por atributos personales ni interés en "deudas".</div>
+      <div class="check-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg>Ningún anuncio menciona tarifas ni montos del servicio.</div>
+      <div class="check-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg>El bot de WhatsApp, no el anuncio, hace la calificación real.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <div class="mark">FICORP</div>
+      <div class="conf">HIGH INSIGHT — DOCUMENTO DE ESTRATEGIA<br/>USO INTERNO DEL PROYECTO</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var ids = ["s-hero","s-brand","s-icp","s-insight","s-channels","s-invest","s-content","s-roadmap","s-kpi"];
+    var rail = document.getElementById("railInner");
+    var dots = [];
+    ids.forEach(function(id){
+      var b = document.createElement("button");
+      b.className = "rail-dot";
+      b.setAttribute("aria-label", id);
+      b.addEventListener("click", function(){
+        var el = document.getElementById(id);
+        if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+      });
+      rail.appendChild(b);
+      dots.push({id:id, el:b});
+    });
+    function onScroll(){
+      var y = window.scrollY + window.innerHeight*0.3;
+      var current = ids[0];
+      ids.forEach(function(id){
+        var el = document.getElementById(id);
+        if(el && el.offsetTop <= y) current = id;
+      });
+      dots.forEach(function(d){ d.el.classList.toggle("active", d.id === current); });
+    }
+    window.addEventListener("scroll", onScroll, {passive:true});
+    onScroll();
+
+    var tabs = document.querySelectorAll(".cal-tab");
+    tabs.forEach(function(t){
+      t.addEventListener("click", function(){
+        tabs.forEach(function(x){ x.classList.remove("active"); });
+        t.classList.add("active");
+        document.querySelectorAll(".cal-month").forEach(function(m){ m.classList.remove("active"); });
+        document.getElementById(t.getAttribute("data-m")).classList.add("active");
+      });
+    });
+  })();
+</script>
