@@ -120,6 +120,25 @@
   .kpibox .n{font-family:'Fraunces';font-size:1.7rem;color:var(--ink);font-weight:600}
   .kpibox .l{font-size:.74rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;font-family:'IBM Plex Mono'}
 
+  /* retorno / unit economics */
+  .ctl-l{display:block;font-family:'IBM Plex Mono';font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin:16px 0 2px}
+  .feewrap{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:10px;padding:7px 10px;font-family:'IBM Plex Mono';margin-top:2px}
+  .feewrap>span{color:var(--ink-soft)}
+  .feewrap input{border:0;font:inherit;font-size:1rem;font-weight:600;width:100%;color:var(--ink);background:none}
+  .feewrap input:focus{outline:none}
+  .fun-h,.brk-h{font-family:'IBM Plex Mono';font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px}
+  .funnel{display:flex;flex-direction:column;gap:18px}
+  .fstage .ftop{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .fstage .fn{font-size:1.15rem;font-weight:600;color:var(--ink)}
+  .fstage .fsub{font-size:.76rem;margin-top:5px}
+  .split2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+  .brk{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px}
+  .brk-row{display:flex;justify-content:space-between;gap:12px;font-size:.85rem;padding:9px 0;border-bottom:1px solid var(--line)}
+  .brk-row:last-child{border-bottom:0}
+  .brk-row.tot{font-weight:600;font-size:.94rem;border-top:1.5px solid var(--slate);border-bottom:0;margin-top:4px;padding-top:12px}
+  .brk-row.rel span:last-child{color:var(--relief-dark)}
+  @media(max-width:760px){.split2{grid-template-columns:1fr}#retorno .kpis{grid-template-columns:1fr 1fr!important}}
+
   /* whatsapp */
   .phone{width:330px;max-width:100%;margin:0 auto;background:#000;border-radius:34px;padding:10px;box-shadow:0 20px 50px rgba(13,27,42,.25)}
   .screen{background:var(--wa-bg);border-radius:26px;overflow:hidden;height:560px;display:flex;flex-direction:column;background-image:linear-gradient(rgba(236,229,221,.6),rgba(236,229,221,.6))}
@@ -181,7 +200,7 @@
     <nav id="nav">
       <button class="tab active" data-t="estrategia">Estrategia</button>
       <button class="tab" data-t="captacion">SEO · GEO · Paid</button>
-      <button class="tab" data-t="pauta">Calculadora</button>
+      <button class="tab" data-t="calculadora">Calculadora</button>
       <button class="tab" data-t="bot">Bot WhatsApp</button>
       <button class="tab" data-t="crm">CRM</button>
       <button class="tab" data-t="contenido">Parrilla</button>
@@ -291,39 +310,105 @@
     </div>
   </section>
 
-  <!-- PAUTA / CALCULADORA -->
-  <section class="panel" id="pauta">
-    <div class="eyebrow">Presupuesto de pauta · en vivo</div>
-    <h2 class="title">Calculadora de inversión</h2>
-    <p class="lead">Mueve el presupuesto mensual de medios del cliente y mira cómo se reparte entre canales y cuántos leads proyecta. Las cifras son direccionales — se afinan con el CPC real del mes 1.</p>
+  <!-- CALCULADORA · INVERSIÓN Y RETORNO -->
+  <section class="panel" id="calculadora">
+    <div class="eyebrow">Inversión y retorno · simulación en vivo</div>
+    <h2 class="title">De la inversión al cliente firmado</h2>
+    <p class="lead">Ajusta el presupuesto de pauta y los supuestos del embudo, y observa en tiempo real cuántos clientes se firman, el ingreso proyectado y el retorno de cada peso invertido.</p>
 
-    <div class="calc" style="margin-top:26px">
-      <label class="mono" style="font-size:.75rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.1em">Presupuesto mensual de medios (COP)</label>
+    <div class="filters" style="margin-top:22px" id="presets">
+      <button class="fbtn" data-p="cons">Conservador</button>
+      <button class="fbtn on" data-p="base">Base</button>
+      <button class="fbtn" data-p="opt">Optimista</button>
+    </div>
+
+    <div class="calc">
+      <label class="mono" style="font-size:.75rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.1em">Presupuesto mensual de pauta (COP)</label>
       <div class="budget-in"><span>$</span><span id="budgetLabel">6.000.000</span></div>
       <input type="range" id="budget" min="1000000" max="20000000" step="500000" value="6000000">
       <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono';font-size:.7rem;color:var(--ink-soft)"><span>$1M</span><span>$20M</span></div>
 
-      <div class="alloc">
-        <div class="allocrow">
-          <div class="top"><span>🔵 Google Ads <span id="gp" class="muted"></span></span><span class="amt" id="ga"></span></div>
-          <div class="track"><div class="fill google" id="gf"></div></div>
+      <div class="grid g2" style="gap:30px;margin-top:26px">
+        <!-- distribución + supuestos -->
+        <div>
+          <div class="fun-h">Distribución por canal</div>
+          <div class="alloc">
+            <div class="allocrow">
+              <div class="top"><span>🔵 Google Ads <span id="gp" class="muted"></span></span><span class="amt" id="ga"></span></div>
+              <div class="track"><div class="fill google" id="gf"></div></div>
+            </div>
+            <div class="allocrow">
+              <div class="top"><span>🔴 Meta (FB/IG) <span id="mp" class="muted"></span></span><span class="amt" id="ma"></span></div>
+              <div class="track"><div class="fill meta" id="mf"></div></div>
+            </div>
+            <div class="allocrow">
+              <div class="top"><span>🟣 TikTok Ads <span id="tp" class="muted"></span></span><span class="amt" id="ta"></span></div>
+              <div class="track"><div class="fill tiktok" id="tf"></div></div>
+            </div>
+          </div>
+          <p class="muted" style="font-size:.78rem;margin-top:10px">CPL por canal asumido: Google $32k · Meta $16k · TikTok $24k · <b>CPL combinado <span id="cplComb" class="mono">$20.000</span></b></p>
+
+          <label class="ctl-l">Tasa de cualificación (lead → calificado) · <span id="qualLabel" class="muted">40%</span></label>
+          <input type="range" id="qual" min="15" max="60" step="1" value="40">
+
+          <label class="ctl-l">Tasa de cierre (calificado → firmado) · <span id="closeLabel" class="muted">10%</span></label>
+          <input type="range" id="close" min="3" max="25" step="1" value="10">
+
+          <label class="ctl-l">Ticket promedio por proceso · <span id="ticketLabel" class="muted">$9.000.000</span></label>
+          <input type="range" id="ticket" min="3000000" max="15000000" step="500000" value="9000000">
+
+          <div style="display:flex;gap:14px;margin-top:8px">
+            <div style="flex:1">
+              <label class="ctl-l">Fee lead gestionado</label>
+              <div class="feewrap"><span>$</span><input type="number" id="feeG" value="4500" step="500" min="0"></div>
+            </div>
+            <div style="flex:1">
+              <label class="ctl-l">Fee lead calificado</label>
+              <div class="feewrap"><span>$</span><input type="number" id="feeC" value="6500" step="500" min="0"></div>
+            </div>
+          </div>
         </div>
-        <div class="allocrow">
-          <div class="top"><span>🔴 Meta (FB/IG) <span id="mp" class="muted"></span></span><span class="amt" id="ma"></span></div>
-          <div class="track"><div class="fill meta" id="mf"></div></div>
-        </div>
-        <div class="allocrow">
-          <div class="top"><span>🟣 TikTok Ads <span id="tp" class="muted"></span></span><span class="amt" id="ta"></span></div>
-          <div class="track"><div class="fill tiktok" id="tf"></div></div>
+
+        <!-- embudo -->
+        <div>
+          <div class="fun-h">Embudo mensual proyectado</div>
+          <div class="funnel">
+            <div class="fstage">
+              <div class="ftop"><span>Leads gestionados</span><span class="fn mono" id="fGest">300</span></div>
+              <div class="track"><div class="fill" style="background:var(--slate);width:100%"></div></div>
+              <div class="fsub muted">el bot atiende y retagetea cada lead de pauta</div>
+            </div>
+            <div class="fstage">
+              <div class="ftop"><span>Leads calificados</span><span class="fn mono" id="fCalif">120</span></div>
+              <div class="track"><div class="fill" id="fCalifBar" style="background:var(--relief);width:40%"></div></div>
+              <div class="fsub muted">monto de deuda, embargo y ciudad verificados</div>
+            </div>
+            <div class="fstage">
+              <div class="ftop"><span>Clientes firmados</span><span class="fn mono" id="fCli">12</span></div>
+              <div class="track"><div class="fill" id="fCliBar" style="background:var(--gold);width:4%"></div></div>
+              <div class="fsub muted">contrato firmado · ingreso reconocido</div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="kpis">
-        <div class="kpibox"><div class="n" id="leads">—</div><div class="l">Leads brutos / mes</div></div>
-        <div class="kpibox"><div class="n" id="qual">—</div><div class="l">Cualificados (35–45%)</div></div>
-        <div class="kpibox"><div class="n mono" id="cpl">—</div><div class="l">CPL combinado</div></div>
+      <div class="kpis" style="grid-template-columns:repeat(4,1fr)">
+        <div class="kpibox"><div class="n" id="kCli">12</div><div class="l">Clientes / mes</div></div>
+        <div class="kpibox"><div class="n" id="kIng">$108M</div><div class="l">Ingreso / mes</div></div>
+        <div class="kpibox"><div class="n mono" id="kCac">$632k</div><div class="l">CAC por cliente</div></div>
+        <div class="kpibox"><div class="n" id="kRoas">14×</div><div class="l">Retorno (ROAS)</div></div>
       </div>
-      <p class="muted" style="font-size:.8rem;margin-top:18px">Excluye fee de gestión e IVA (19%). Reserva ~15% para testing el mes 1 y no escales hasta tener CPL cualificado estable (~día 15). CPL por canal asumido: Google $32k · Meta $16k · TikTok $24k.</p>
+
+      <div class="brk" style="margin-top:16px">
+        <div class="brk-h">Inversión mensual de FICORP</div>
+        <div class="brk-row"><span>Pauta (medios)</span><span class="mono" id="bPauta">$6.000.000</span></div>
+        <div class="brk-row"><span><span id="bGestN">180</span> leads gestionados × <span id="bFeeG">$4.500</span></span><span class="mono" id="bGest">$810.000</span></div>
+        <div class="brk-row"><span><span id="bCalifN">120</span> leads calificados × <span id="bFeeC">$6.500</span></span><span class="mono" id="bCalif">$780.000</span></div>
+        <div class="brk-row tot"><span>Inversión total</span><span class="mono" id="bTot">$7.590.000</span></div>
+        <div class="brk-row tot rel"><span>Margen bruto proyectado</span><span class="mono" id="bMargen">$100,4M</span></div>
+      </div>
+
+      <p class="muted" style="font-size:.78rem;margin-top:16px">Cifras direccionales; se afinan con los datos reales del mes 1. No incluyen IVA (19%) ni honorarios de operación legal. El ingreso de cada proceso (~3 meses) se reconoce de forma escalonada.</p>
     </div>
 
     <div class="grid g3" style="margin-top:16px">
@@ -459,31 +544,73 @@
     window.scrollTo({top:0,behavior:'smooth'});
   }));
 
-  // ---- calculator ----
+  // ---- calculadora · inversión y retorno ----
   const CPL={google:32000,meta:16000,tiktok:24000};
-  const fmt=n=>n.toLocaleString('es-CO');
-  const budget=document.getElementById('budget');
+  const el=id=>document.getElementById(id);
+  const presets={ cons:{qual:30,close:6}, base:{qual:40,close:10}, opt:{qual:45,close:15} };
   function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+  function money(n){n=Math.round(n);const a=Math.abs(n);
+    if(a>=1000000)return '$'+(n/1000000).toLocaleString('es-CO',{maximumFractionDigits:1})+'M';
+    if(a>=10000)return '$'+(n/1000).toLocaleString('es-CO',{maximumFractionDigits:0})+'k';
+    return '$'+n.toLocaleString('es-CO');}
+  function full(n){return '$'+Math.round(n).toLocaleString('es-CO');}
   function calc(){
-    const B=+budget.value;
-    document.getElementById('budgetLabel').textContent=fmt(B);
+    const B=+el('budget').value;
+    el('budgetLabel').textContent=B.toLocaleString('es-CO');
+    // distribución por canal
     const t=clamp((B-3000000)/9000000,0,1);
     const gp=0.45, mp=0.40-0.05*t, tp=0.15+0.05*t;
-    const gb=B*gp, mb=B*mp, tb=B*tp;
-    const set=(pid,aid,fid,pct,amt,max)=>{
-      document.getElementById(pid).textContent=Math.round(pct*100)+'%';
-      document.getElementById(aid).textContent='$'+fmt(Math.round(amt));
-      document.getElementById(fid).style.width=(amt/max*100)+'%';
+    const gb=B*gp, mb=B*mp, tb=B*tp, mx=Math.max(gb,mb,tb);
+    const set=(pid,aid,fid,pct,amt)=>{
+      el(pid).textContent=Math.round(pct*100)+'%';
+      el(aid).textContent=full(amt);
+      el(fid).style.width=(amt/mx*100)+'%';
     };
-    const mx=Math.max(gb,mb,tb);
-    set('gp','ga','gf',gp,gb,mx); set('mp','ma','mf',mp,mb,mx); set('tp','ta','tf',tp,tb,mx);
-    const leads=gb/CPL.google+mb/CPL.meta+tb/CPL.tiktok;
-    const lo=Math.round(leads*0.8), hi=Math.round(leads*1.2);
-    document.getElementById('leads').textContent=lo+'–'+hi;
-    document.getElementById('qual').textContent=Math.round(leads*0.35)+'–'+Math.round(leads*0.45);
-    document.getElementById('cpl').textContent='$'+fmt(Math.round(B/leads));
+    set('gp','ga','gf',gp,gb); set('mp','ma','mf',mp,mb); set('tp','ta','tf',tp,tb);
+    // embudo
+    const brutos=gb/CPL.google+mb/CPL.meta+tb/CPL.tiktok;
+    const qr=+el('qual').value/100, cr=+el('close').value/100, ticket=+el('ticket').value;
+    const feeG=+el('feeG').value||0, feeC=+el('feeC').value||0;
+    const calif=brutos*qr, gestNC=Math.max(brutos-calif,0), clientes=calif*cr;
+    el('cplComb').textContent=full(B/brutos);
+    el('qualLabel').textContent=Math.round(qr*100)+'%';
+    el('closeLabel').textContent=Math.round(cr*100)+'%';
+    el('ticketLabel').textContent=full(ticket);
+    el('fGest').textContent=Math.round(brutos).toLocaleString('es-CO');
+    el('fCalif').textContent=Math.round(calif).toLocaleString('es-CO');
+    el('fCli').textContent=clientes>=10?Math.round(clientes).toLocaleString('es-CO'):clientes.toFixed(1);
+    el('fCalifBar').style.width=(qr*100)+'%';
+    el('fCliBar').style.width=Math.max(qr*cr*100,1.5)+'%';
+    // negocio
+    const ingreso=clientes*ticket;
+    const factura=calif*feeC+gestNC*feeG;
+    const inv=B+factura;
+    const cac=clientes>0?inv/clientes:0;
+    const roas=inv>0?ingreso/inv:0;
+    const margen=ingreso-inv;
+    el('kCli').textContent=clientes>=10?Math.round(clientes).toLocaleString('es-CO'):clientes.toFixed(1);
+    el('kIng').textContent=money(ingreso);
+    el('kCac').textContent=money(cac);
+    el('kRoas').textContent=roas.toLocaleString('es-CO',{maximumFractionDigits:1})+'×';
+    // desglose
+    el('bPauta').textContent=full(B);
+    el('bGestN').textContent=Math.round(gestNC).toLocaleString('es-CO');
+    el('bCalifN').textContent=Math.round(calif).toLocaleString('es-CO');
+    el('bFeeG').textContent=full(feeG); el('bFeeC').textContent=full(feeC);
+    el('bGest').textContent=full(gestNC*feeG);
+    el('bCalif').textContent=full(calif*feeC);
+    el('bTot').textContent=full(inv);
+    el('bMargen').textContent=money(margen);
   }
-  budget.addEventListener('input',calc); calc();
+  ['budget','qual','close','ticket','feeG','feeC'].forEach(id=>el(id).addEventListener('input',calc));
+  document.querySelectorAll('#presets .fbtn').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#presets .fbtn').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    const p=presets[b.dataset.p];
+    el('qual').value=p.qual; el('close').value=p.close;
+    calc();
+  }));
+  calc();
 
   // ---- whatsapp bot ----
   const tree={
